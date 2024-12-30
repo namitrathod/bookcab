@@ -1,3 +1,121 @@
 npm init 
 npm i express
 create app.js
+
+The cors package in NPM is used to enable Cross-Origin Resource Sharing (CORS) in Node.js applications:
+
+connect to DB
+
+The Mongoose package is a third-party library for MongoDB that helps with data modeling, schema enforcement, and data manipulation: 
+Data modeling: Mongoose represents application data as JavaScript objects that are mapped to the MongoDB database. 
+Schema enforcement: Mongoose uses Object Data Modeling (ODM) to enforce a semi-rigid schema. 
+Model validation: Mongoose provides schema validation and other features to make it easier to work with MongoDB. 
+Data manipulation: Mongoose can be used to insert, update, and delete data in a database. 
+
+models folder and file 
+added user schema 
+npm i bcrypt jsonwebtoken
+
+        1. userSchema.method.generateAuthToken = function() {...}
+        javascript
+        Copy code
+        userSchema.method.generateAuthToken = function(){
+            const token = jwt.sign({_id: this._id}, process.env.JWT_SECRET);
+            return token;
+        }
+        Purpose: This is an instance method (generateAuthToken) that will be available on every user document (instance) in your MongoDB database.
+        What it does: The method generates a JSON Web Token (JWT) for the user. The token includes the user's unique _id (from the database) as part of the payload. This JWT is then signed using a secret key (process.env.JWT_SECRET) from the environment variables.
+        Why it's needed: This method is important for authenticating a user. When a user logs in successfully, you generate a JWT token for them. This token is then sent to the client, which can be used for subsequent requests to authenticate the user.
+        2. userSchema.method.comparePassword = async function(password) {...}
+        javascript
+        Copy code
+        userSchema.method.comparePassword = async function(password){
+            return await bcrypt.compare(password, this.password);
+        }
+        Purpose: This is another instance method (comparePassword) that compares a plain text password with the hashed password stored in the database.
+        What it does: It uses bcrypt.compare() to check if the password provided by the user matches the hashed password stored in the database (accessible via this.password).
+        Why it's needed: When a user logs in, you need to check if the password they provide matches the one saved in the database. The password is usually hashed before being stored in the database for security reasons, and bcrypt.compare() is used to compare the hashed version of the provided password with the stored one.
+        3. userSchema.statics.hashPassword = async function (password) {...}
+        javascript
+        Copy code
+        userSchema.statics.hashPassword = async function (password){
+            return await bcrypt.hash(password, 10);
+        }
+        Purpose: This is a static method (hashPassword) that will be available on the User model itself, not on instances of the model.
+        What it does: It hashes a plain text password using bcrypt.hash(). The number 10 is the salt rounds, meaning how many times the password is processed to make it harder to brute-force crack. The higher the number, the more secure but slower the hashing process becomes.
+        Why it's needed: Before saving a user's password to the database, you should never store it as plain text. Password hashing is a security measure to ensure that even if the database is compromised, the passwords are not easily retrievable. This method is called when creating or updating a user's password.
+
+    Why is it added in user.model.js?
+        In the context of a MERN stack app, user.model.js serves as the schema definition for the User entity and is typically located in the backend of the application (within the server-side code).
+
+        4.Why is it added in user.model.js?
+            Encapsulation of Logic: By adding these methods to the user.model.js file, you encapsulate all the user-related business logic within the user model itself. This keeps your code organized and avoids cluttering other parts of your app with logic that should belong to the user model.
+            Security: These methods ensure that sensitive data, like passwords, is never stored in plain text in the database. Hashing passwords with bcrypt and generating JWT tokens are essential security practices in modern applications.
+            Code Reusability: By defining these methods in the model, you can easily reuse them across your application (for example, in the authentication controller) whenever you need to generate tokens, hash passwords, or compare passwords.
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...
+const userModel = mongoose.model('User',userSchema)
+module.exports= userModel
+
+const userModel = mongoose.model('User', userSchema);
+mongoose.model():
+
+mongoose.model() is a Mongoose method used to create a model from a Mongoose schema.
+The first argument, 'User', is the name of the model. It represents the plural form of the name in the MongoDB database collection. So, Mongoose will automatically look for a collection named 'users' (plural form of 'User') in your MongoDB database.
+The second argument, userSchema, is the schema that defines the structure of the user documents in that collection. The schema includes the fields (like name, email, password, etc.) and any custom methods or validations associated with those fields.
+By calling mongoose.model(), Mongoose creates a model that you can use to interact with the database (e.g., creating new users, finding users, updating user documents).
+
+The Model:
+
+The userModel object is now a Mongoose model that represents the "User" collection in MongoDB.
+A model allows you to interact with the MongoDB database in an object-oriented way. You can use the model to query the database, add new documents, update existing ones, or delete them.
+2. module.exports = userModel;
+module.exports:
+This line exports the userModel so that it can be used in other files in your application.
+In Node.js, module.exports is used to make parts of your code available to other parts of the application by importing them with require().
+Why it's needed:
+In other parts of the application (for example, in your authentication controller), you will import the userModel to interact with the User collection in your MongoDB database. Without exporting it, other files wouldn't have access to the model.
+Putting It All Together
+In a typical MERN stack application, this code would be part of the backend (in the server-side logic). The user.model.js file would define the schema, methods, and the model, and then this model is exported for use in other parts of your backend, such as controllers or services.
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>...
+
+Mongoose is an Object Data Modeling (ODM) library that provides a way to interact with MongoDB databases in an object-oriented manner. Mongoose defines two core concepts: Schema and Model.
+1. Mongoose Schema:
+A Mongoose Schema is a blueprint for MongoDB documents. It defines the structure of the documents within a collection, including fields, data types, default values, validation rules, and custom methods.
+
+The Schema doesn't directly interact with the database. Instead, it defines the structure and validation rules that will be applied when interacting with documents in the collection.
+
+2. Mongoose Model:
+A Mongoose Model is a compiled version of the Schema. The model allows you to create, read, update, and delete documents from the associated MongoDB collection. It provides methods for interacting with the database, such as save(), find(), update(), and delete().
+=>A Model is essentially a wrapper around the Schema.
+=>It provides the API to interact with the database.
+=>Once you define a Schema, you can create a Model from it.
+=>Models are responsible for interacting with the database and performing operations like querying, creating new documents, updating existing ones, etc.
+....................................................................................
+In a MERN stack application (MongoDB, Express, React, Node.js), different files handle different aspects of the backend logic. Let's break down the flow of the program between the following files:
+
+1)user.controller.js: This handles the HTTP request logic.
+2)user.service.js: This handles the business logic and interacts with the model.
+3)user.model.js: This defines the schema and model for MongoDB interactions.
+4)user.routes.js: This sets up the routes for user-related endpoints.
+5)db.js: This handles the database connection.
+6)app.js: This initializes the Express app and middlewares.
+7)server.js: This starts the Express server and listens for requests
+......................................................................................
+
+1. app.use(express.json());
+This middleware is used to parse incoming JSON payloads in the request body. When a client sends a request with a body (like a POST or PUT request), the body might contain JSON data. This middleware ensures that the request body is parsed as a JavaScript object.
+
+2. app.use(express.urlencoded({ extended: true }));
+This middleware is used to parse incoming URL-encoded form data. This type of data is typically sent by HTML forms that use the application/x-www-form-urlencoded encoding type, which is the default form encoding type in HTML.
+
+What it does:
+URL-encoded data is the data format used by forms (with method="POST" and enctype="application/x-www-form-urlencoded").
+
+This middleware parses the data and makes it accessible in req.body as a JavaScript object.
+
+extended: true: Allows you to use rich objects and arrays (using the qs library internally). This is useful when you need to handle complex objects or arrays in the request body.
+extended: false: Uses the querystring library, which can only parse simple key-value pairs (no complex objects or arrays).
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
