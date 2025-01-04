@@ -123,3 +123,65 @@ Authenticates a user by verifying their email and password.
     "message": "Invalid email or password"
   }
   ```
+
+## GET /users/profile
+
+### Description
+Retrieves the authenticated user's profile data.
+
+### Required
+- A valid JWT token (from cookie or Authorization header)
+
+### Responses
+
+#### Success
+- **Status Code**: 200 OK
+- **Response Body**:
+  ```json
+  {
+    "_id": "user_id_here",
+    "fullname": {
+      "firstname": "Jane",
+      "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "socketId": null
+  }
+  ```
+
+#### Authentication Error
+- **Status Code**: 401 Unauthorized
+- **Response Body**:
+  ```json
+  {
+    "message": "Unauthorized"
+  }
+  ```
+
+## GET /users/logout
+
+### Description
+Logs out the current user by clearing the cookie and blacklisting the token.
+
+### Required
+- A valid JWT token (from cookie or Authorization header)
+
+### Responses
+
+#### Success
+- **Status Code**: 200 OK
+- **Response Body**:
+  ```json
+  {
+    "message": "Logged out successfully"
+  }
+  ```
+
+#### Authentication Error
+- **Status Code**: 401 Unauthorized
+- **Response Body**:
+  ```json
+  {
+    "message": "Unauthorized"
+  }
+  ```
