@@ -1,0 +1,20 @@
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Nzc5NjAyMjcxOTVjNzc3ODRjM2VmNDAiLCJpYXQiOjE3MzYwMDc3MTQsImV4cCI6MTczNjA5NDExNH0.tJUwARh8wpQTHlaMjz8qnMGe61GEMgMKVZPCnu4ULPQ",
+    "driver": {
+        "fullname": {
+            "firstname": "test_driver_firstname",
+            "lastname": "test_driver_lastname"
+        },
+        "email": "test_driver_email@gmail.com",
+        "password": "$2b$10$7nQp2/50xzlpOWSYJFEE1Ow0b9nY75UHQXfU8Squg1aib1KXMbTmO",
+        "status": "inactive",
+        "vehicle": {
+            "color": "red",
+            "plate": "TX3432",
+            "type": "auto",
+            "capacity": 5
+        },
+        "_id": "677960227195c77784c3ef40",
+        "__v": 0
+    }
+}

@@ -6,6 +6,7 @@ const cors = require("cors")
 const cookieParser = require('cookie-parser');
 const connectToDb=require('./db/db')
 const userRoutes= require('../backend/routes/user.routes')
+const driverRoutes= require('../backend/routes/driver.routes')
 
 app.use(cors())
 app.use(express.json());
@@ -20,5 +21,7 @@ app.get("/", (req, res) => {
 })
 
 app.use('/users', userRoutes);
+
+app.use('/drivers', driverRoutes);
 
 module.exports = app
