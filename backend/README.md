@@ -280,3 +280,74 @@ This endpoint registers a new driver. It ensures the required data is provided a
     ]
   }
   ```
+
+## GET /drivers/profile
+
+### Description
+Retrieves the authenticated driver's profile data.
+
+### Required
+- A valid JWT token (from cookie or Authorization header)
+
+### Responses
+
+#### Success
+- **Status Code**: 200 OK
+- **Response Body**:
+  ```json
+  {
+    "driver": {
+      "_id": "driver_id_here",
+      "fullname": {
+        "firstname": "John",
+        "lastname": "Smith"
+      },
+      "email": "john.smith@example.com",
+      "vehicle": {
+        "color": "Red",
+        "plate": "XYZ123",
+        "type": "car",
+        "capacity": 4
+      },
+      "status": "inactive",
+      "socketId": null
+    }
+  }
+  ```
+
+#### Authentication Error
+- **Status Code**: 401 Unauthorized
+- **Response Body**:
+  ```json
+  {
+    "message": "Unauthorized"
+  }
+  ```
+
+## GET /drivers/logout
+
+### Description
+Logs out the current driver by clearing the cookie and blacklisting the token.
+
+### Required
+- A valid JWT token (from cookie or Authorization header)
+
+### Responses
+
+#### Success
+- **Status Code**: 200 OK
+- **Response Body**:
+  ```json
+  {
+    "message": "Logged out successfully"
+  }
+  ```
+
+#### Authentication Error
+- **Status Code**: 401 Unauthorized
+- **Response Body**:
+  ```json
+  {
+    "message": "Unauthorized"
+  }
+  ```
