@@ -3,6 +3,7 @@ import { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import UserContext from '../context/UserContext'
+import logo from '../assets/logo.png'
 
 const UserSignup = () => {
   const [firstName, setFirstName] = useState('');
@@ -19,23 +20,24 @@ const UserSignup = () => {
     e.preventDefault();
     const newUser = { fullname: { firstname: firstName, lastname: lastName }, email: email, password: password }
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
-    if(response.status === 201) {
-      const data=response.data
+    if (response.status === 201) {
+      const data = response.data
       setUser(data.user)
       localStorage.setItem('token', data.token);
-      navigate('/home')}
+      navigate('/home')
+    }
     setEmail('')
     setFirstName('')
     setLastName('')
     setPassword('')
-    setUserdata({ fullName:{firstName: firstName, lastName: lastName}, email: email, password});
+    setUserdata({ fullName: { firstName: firstName, lastName: lastName }, email: email, password });
     console.log(userdata)
   }
   return (
     <div>
       <div className='p-7 h-screen flex flex-col justify-between'>
         <div>
-        <h1 className="text-5xl font-bold mb-7 ">CabGo</h1>
+          <img src={logo} alt="Logo" className='w-28 mb-3' />
 
           <form onSubmit={(e) => {
             submitHandler(e)

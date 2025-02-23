@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import logo from '../assets/logo.png';
 
 const DriverLogin = () => {
   const [email, setEmail] = useState('');
@@ -28,7 +29,7 @@ const DriverLogin = () => {
   return (
     <div className="p-7 h-screen flex flex-col justify-between">
       <div>
-        <h1 className="text-5xl font-bold mb-7 ">CabGo</h1>
+        <img src={logo} alt="Logo" className='w-28 mb-3' />
         <form onSubmit={formhandler}>
           <h3 className="text-3xl font-medium mb-3"> What&apos;s your email</h3>
           <input required value={email} onChange={(e) => { setEmail(e.target.value) }} className="bg-[#eeeeee] mb-7 rounded px-2 py-2 border w-full test-lg placeholder:text-base" type="email" placeholder="your Email" />

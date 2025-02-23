@@ -5,6 +5,7 @@ import { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import DriverDataContext from '../context/DriverContext'
 import axios from 'axios'
+import logo from '../assets/logo.png'
 
 
 const DriverSignup = () => {
@@ -68,7 +69,7 @@ const DriverSignup = () => {
   return (
     <div className='py-5 px-5 h-screen flex flex-col justify-between'>
       <div>
-        <img className='w-20 mb-3' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
+        <img src={logo} alt="Logo" className='w-28 mb-3' />
 
         <form onSubmit={(e) => {
           submitHandler(e)
